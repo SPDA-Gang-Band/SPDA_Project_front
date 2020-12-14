@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Layout } from 'antd';
-import './PageFooter.scss';
+import './FooterPage.scss';
 const { Footer } = Layout;
 
-export const PageFooter = () => {
+export const FooterPage = () => {
     return (
         <>
             <Footer 

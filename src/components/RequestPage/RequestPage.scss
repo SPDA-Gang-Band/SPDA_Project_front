@@ -1,0 +1,15 @@
+.request-page{
+    width: 100%;
+    max-width: 1280px;
+    margin: 4% auto;
+
+    &__title{
+        font-size: 32px;
+        line-height: 36px;
+
+        display: flex;
+        align-items: center;
+
+        color: #001424;
+    }
+}

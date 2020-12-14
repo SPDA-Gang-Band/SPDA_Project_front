@@ -9,6 +9,11 @@
     flex-direction: row;
     justify-content: space-between;
 
+    &__button{
+        background: #E30611 !important;
+        border: #E30611 3px !important;
+    }
+
     &__button-text{
         color: #001529 !important;
     }

@@ -2,16 +2,17 @@ import React from 'react';
 
 import { Layout, Button } from 'antd';
 
-import './PageHeader.scss';
+import './HeaderPage.scss';
 import logo from '../../images/logo.svg'; 
 
 const { Header } = Layout;
 
-export const PageHeader = (props) => {
+export const HeaderPage = (props) => {
 
     const extraMenu = () => (
         <>
             <Button
+                className="page-header__button"
                 type="primary"
                 danger>
                 <span className="page-header__button-text">
