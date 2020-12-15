@@ -9,12 +9,31 @@
     flex-direction: row;
     justify-content: space-between;
 
+    &__item{
+        color: #E30611;
+        font-size: 16px;
+        padding-right: 50px;
+    }
+
+    &__item:hover{
+        color: #E30611;
+        text-decoration: underline;
+    }
+
     &__button{
+        width: 80px;
+        height: 40px !important;
         background: #E30611 !important;
         border: #E30611 3px !important;
+        font-size: 16px !important;
     }
 
     &__button-text{
         color: #001529 !important;
     }
+
+    // &__extra-menu{
+    //     display: flex;
+    //     flex-direction: row;
+    // }
 }

@@ -6,8 +6,9 @@
 .request{
 
     width: 100%;
-    max-width: 980px;
-    margin: 20px 9%;
+    // max-width: 680px;
+    padding: 20px 6%;
+    // margin: 20px 9%;
 
     &__button{
         background: #E30611 !important;
@@ -16,9 +17,24 @@
         height: 50px !important;
     }
 
-    // &__label-text{
-    //     font-size: 20px !important;
-    // }
+    &__form-label{
+        font-size: 18px !important;
+    }
+
+    &__form-group{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__form-item{
+        flex-basis: 48%;
+    }
+
+    &__form-input{
+        height: 35px;
+    }
+
     &__button-text{
         // font-family: MTS Sans;
         display: flex;
