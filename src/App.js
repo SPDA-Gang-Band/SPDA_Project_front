@@ -1,25 +1,31 @@
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React from "react";
+import { Redirect, BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { HeaderPage } from './components/HeaderPage/HeaderPage';
 import { FooterPage } from './components/FooterPage/FooterPage';
 import { CoursesPage } from './components/CoursesPage/CoursesPage';
 import { MainPage } from './components/MainPage/MainPage';
 import { RequestPage } from './components/RequestPage/RequestPage';
+import {useSelector} from "react-redux";
 
 function App() {
+
+  const userLogin = useSelector(state => state.loginReducer.login)
+  const loggedIn = userLogin !== null
+
   return (
     <>
       <BrowserRouter>
-        <HeaderPage loggedIn={true} />
+        <HeaderPage loggedIn={loggedIn} />
         <Switch>
           <Route exact path='/'>
-            <MainPage />
+            {loggedIn ? <Redirect to='/course-requests' /> : <MainPage />}
           </Route>
           <Route exact path='/course-requests'>
-            <CoursesPage />
+            {loggedIn ? <CoursesPage /> : <Redirect to='/' />}
           </Route>
           <Route path='/request'>
-            <RequestPage />
+            {loggedIn ? <RequestPage /> : <Redirect to='/' />}
           </Route>
         </Switch>
         <FooterPage />

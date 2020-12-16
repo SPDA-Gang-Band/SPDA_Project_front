@@ -1,41 +1,33 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Form, Input, Button } from 'antd';
+import { createCourse } from "../../api/coursesApi";
+import {useSelector} from "react-redux";
 
 import './Request.scss';
 
 export const Request = () => {
 
     const [form] = Form.useForm();
+    const userLogin = useSelector(state => state.loginReducer.login)
 
-    const sendForm = async (data) => {
-        const response = await fetch(``, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: data
-        }).catch(function(error){
-            console.log(error);
-        })
-        if (response){
-            const resData = await response.json();
-
-            if (resData.status === 'success'){
-               alert('Data sent'); 
-            }
-            else if (resData.status === 'fail'){
-                alert('Something went wrong');
-            }
-        }
+    const sendForm = (data) => {
+        createCourse(data, userLogin)
+          .then(response => {
+              // TODO: redirect to courses page
+              console.log(response)
+              form.resetFields()
+          })
+          .catch(err => console.error(err))
     }
 
     const handleSubmit = (values) => {
-        
-        // sendForm(values);
         console.log(values);
-        form.resetFields();
+        form.validateFields()
+          .then(() => {
+              sendForm(values);
+          })
     }
-    
+
     return (
         <>  
             <div className="request">
@@ -47,32 +39,36 @@ export const Request = () => {
                     <div className="request__form-group">
                         <Form.Item
                             className="request__form-item"
-                            name="firstname"
+                            name="name"
                             label={<label className="request__form-label">Фамилия</label>}
-                            required>
+                            rules={[{ required: true, message: 'Введите фамилию' }]}
+                        >
                             <Input className="request__form-input"/>
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
-                            name="lastname"
+                            name="surname"
                             label={<label className="request__form-label">Имя</label>}
-                            required>
+                            rules={[{ required: true, message: 'Введите имя' }]}
+                        >
                             <Input className="request__form-input"/>
                         </Form.Item>
                     </div>
                     <div className="request__form-group">
                         <Form.Item
                             className="request__form-item"
-                            name="coursename"
+                            name="course_name"
                             label={<label className="request__form-label">Название курса</label>}
-                            required>
+                            rules={[{ required: true, message: 'Введите название курса' }]}
+                        >
                             <Input className="request__form-input" />
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
                             name="link"
                             label={<label className="request__form-label">Ссылка на курс</label>}
-                            required>
+                            rules={[{ required: true, message: 'Вставьте ссылку на курс' }]}
+                        >
                             <Input className="request__form-input" />
                         </Form.Item>
                     </div>
@@ -80,12 +76,14 @@ export const Request = () => {
                         <Form.Item
                             className="request__form-item"
                             name="price"
-                            label={<label className="request__form-label">Цена курса (в рублях)</label>}>
+                            label={<label className="request__form-label">Цена курса (в рублях)</label>}
+                            rules={[{ required: true, message: 'Укажите цену курса' }]}
+                        >
                             <Input className="request__form-input" type="number" />
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
-                            name="date"
+                            name="start_date"
                             label={<label className="request__form-label">Дата начала курса</label>}>
                             <Input className="request__form-input" type="date" />
                         </Form.Item>
@@ -93,7 +91,7 @@ export const Request = () => {
                     <div className="request__form-group">
                         <Form.Item
                             className="request__form-item"
-                            name="quarter"
+                            name="study_quarter"
                             label={<label className="request__form-label">Квартал обучения</label>}>
                             <Input className="request__form-input" />
                         </Form.Item>
