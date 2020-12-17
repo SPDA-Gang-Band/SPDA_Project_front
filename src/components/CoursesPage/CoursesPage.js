@@ -132,13 +132,14 @@ export const CoursesPage = () => {
     }
 
     useEffect(() => {
+
         getCourses(userLogin)
           .then(response => {
               setCourses(response.data)
               setReload(false)
           })
           .catch(err => console.error(err))
-    }, [])
+    }, [reload])
 
     const edit = (record) => {
         setRedirect(true);

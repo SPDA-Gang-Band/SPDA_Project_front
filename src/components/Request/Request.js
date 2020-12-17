@@ -134,7 +134,9 @@ export const Request = (props) => {
                         <Form.Item
                             className="request__form-item"
                             name="study_quarter"
-                            label={<label className="request__form-label">Квартал обучения</label>}>
+                            label={<label className="request__form-label">Квартал обучения</label>}
+                            rules={[{ required: true, message: 'Укажите квартал обучения' }]}
+                        >
                             <Input className="request__form-input" />
                         </Form.Item>
                         <Form.Item
