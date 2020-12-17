@@ -20,10 +20,7 @@ export const RequestPage = (props) => {
             })
             .catch(err => console.log(err));
         }
-    }, [editPage])
-
-    console.log("course: ", course);
-    console.log("props: ", props);
+    }, [])
     
     const title = editPage === undefined ? "Подать заявку на обучение" : "Редактировать заявку";
     return (
