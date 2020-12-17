@@ -23,6 +23,10 @@ export const editCourse = (id, data, login) => {
   return axios.put(`${baseUrl}/${courseRequestUrl}/${id}/`, data, {headers: createHeader(login)})
 }
 
+export const editStatus = (id, data, login) => {
+  return axios.patch(`${baseUrl}/${courseRequestUrl}/${id}/`, data, {headers: createHeader(login)})
+}
+
 export const deleteCourse = (id, login) => {
   return axios.delete(`${baseUrl}/${courseRequestUrl}/${id}/`, {headers: createHeader(login)})
 }

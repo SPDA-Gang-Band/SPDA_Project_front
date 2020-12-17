@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { Form, Input, Button } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Alert, Form, Input, Button } from 'antd';
 import { createCourse } from "../../api/coursesApi";
 import {useSelector} from "react-redux";
 
@@ -9,6 +9,7 @@ export const Request = () => {
 
     const [form] = Form.useForm();
     const userLogin = useSelector(state => state.loginReducer.login)
+    const [error, setError] = useState(false);
 
     const sendForm = (data) => {
         createCourse(data, userLogin)
@@ -16,8 +17,11 @@ export const Request = () => {
               // TODO: redirect to courses page
               console.log(response)
               form.resetFields()
+              setError(false)
           })
-          .catch(err => console.error(err))
+          .catch(err =>
+              setError(true),
+          )
     }
 
     const handleSubmit = (values) => {
@@ -110,6 +114,7 @@ export const Request = () => {
                         </Button>
                     </Form.Item>
                 </Form>
+                { error && <Alert message="Error" type="error" showIcon /> }
             </div>
         </>
     )
