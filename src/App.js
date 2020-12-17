@@ -24,8 +24,9 @@ function App() {
           <Route exact path='/course-requests'>
             {loggedIn ? <CoursesPage /> : <Redirect to='/' />}
           </Route>
-          <Route path='/request'>
-            {loggedIn ? <RequestPage /> : <Redirect to='/' />}
+          <Route path='/request' render={(props) => (
+              loggedIn ? <RequestPage {...props}/> : <Redirect to='/' />
+          )}>
           </Route>
         </Switch>
         <FooterPage />

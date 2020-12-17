@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { Table } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 import { useSelector } from "react-redux";
-import { getCourses } from "../../api/coursesApi";
+import { editCourse, getCourses } from '../../api/coursesApi';
+import { Redirect } from 'react-router-dom';
 
 import './CoursesPage.scss';
 
@@ -37,15 +39,24 @@ export const CoursesPage = () => {
             dataIndex: 'price',
             key: 'price'
         },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => (
+                <EditOutlined onClick={() => edit(record)} />
+            )
+        }
         // {
         //     title: 'Статус заявки',
         //     dataIndex: 'status',
         //     key: 'status'
         // }
     ];
-
     const userLogin = useSelector(state => state.loginReducer.login)
     const [courses, setCourses] = useState([])
+    const [redirect, setRedirect] = useState(false);
+    const [requestId, setRequestId] = useState(null);
 
     useEffect(() => {
         getCourses(userLogin)
@@ -54,6 +65,11 @@ export const CoursesPage = () => {
           })
           .catch(err => console.error(err))
     }, [])
+
+    const edit = (record) => {
+        setRedirect(true);
+        setRequestId(record.id);
+    }
 
     // const sampleData = [
     //     {
@@ -76,6 +92,15 @@ export const CoursesPage = () => {
                     columns={columns}
                     dataSource={courses}
                 />
+                {redirect && (
+                    <Redirect to={{
+                        pathname: "/request",
+                        state: {
+                            isEdit: true,
+                            requestId: requestId
+                        }
+                    }} />
+                )}
             </div>
         </>
     )
