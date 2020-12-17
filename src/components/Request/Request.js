@@ -2,11 +2,13 @@ import React, {useEffect} from 'react';
 import { Form, Input, Button } from 'antd';
 import { createCourse } from "../../api/coursesApi";
 import {useSelector} from "react-redux";
+import { Redirect } from 'react-router-dom';
 
 import './Request.scss';
 
 export const Request = () => {
 
+    const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
     const userLogin = useSelector(state => state.loginReducer.login)
 
@@ -16,8 +18,9 @@ export const Request = () => {
               // TODO: redirect to courses page
               console.log(response)
               form.resetFields()
+              setRedirect(true);
           })
-          .catch(err => console.error(err))
+          .catch(err => console.error(err))  
     }
 
     const handleSubmit = (values) => {
@@ -110,6 +113,9 @@ export const Request = () => {
                         </Button>
                     </Form.Item>
                 </Form>
+                {redirect && (
+                    <Redirect to="/course-requests" />
+                )}
             </div>
         </>
     )
