@@ -7,7 +7,6 @@ import { Redirect } from 'react-router-dom';
 import './Request.scss';
 
 export const Request = (props) => {
-    const formRef = React.createRef();
     const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
     const [error, setError] = useState(false);

@@ -13,12 +13,12 @@ export const RequestPage = (props) => {
 
     React.useEffect(() => {
         if (editPage) {
-        const requestId = props.location.state.requestId;
-        getCourseById(requestId, login)
-          .then(response => {
-                setCourse(response.data)
-            })
-            .catch(err => console.log(err));
+            const requestId = props.location.state.requestId;
+            getCourseById(requestId, login)
+              .then(response => {
+                    setCourse(response.data)
+                })
+                .catch(err => console.log(err));
         }
     }, [])
     
