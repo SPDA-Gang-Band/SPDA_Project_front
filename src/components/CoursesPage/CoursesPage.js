@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { Space, Select } from 'antd';
 import Table from "./Table";
+import { EditOutlined } from '@ant-design/icons';
 import { useSelector } from "react-redux";
-import {editStatus, getCourses} from "../../api/coursesApi";
+import {editStatus, editCourse, getCourses} from "../../api/coursesApi";
+import { Redirect } from 'react-router-dom';
+
 import './CoursesPage.scss';
 import moment from "moment";
 
@@ -62,11 +65,21 @@ export const CoursesPage = () => {
                 multiple: 3
             },
             key: 'study_quarter'
-        }
+        },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => (
+              <EditOutlined onClick={() => edit(record)} />
+            )
+        },
     ];
 
     const userLogin = useSelector(state => state.login)
     const [courses, setCourses] = useState([])
+    const [redirect, setRedirect] = useState(false);
+    const [requestId, setRequestId] = useState(null);
     const [selectedId, setSelectedId] = useState(null)
 
     if (userLogin === 'admin'){
@@ -104,7 +117,6 @@ export const CoursesPage = () => {
     }
     function handleChange(value) {
         editStatus(selectedId, {status: value},userLogin)
-        console.log(value);
     }
 
     useEffect(() => {
@@ -114,6 +126,11 @@ export const CoursesPage = () => {
           })
           .catch(err => console.error(err))
     }, [])
+
+    const edit = (record) => {
+        setRedirect(true);
+        setRequestId(record.id);
+    }
 
     return (
         <>
@@ -131,6 +148,15 @@ export const CoursesPage = () => {
                         }
                     }}
                 />
+                {redirect && (
+                    <Redirect to={{
+                        pathname: "/request",
+                        state: {
+                            isEdit: true,
+                            requestId: requestId
+                        }
+                    }} />
+                )}
             </div>
         </>
     )
