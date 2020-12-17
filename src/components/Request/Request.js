@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import { Form, Input, Button } from 'antd';
-import { createCourse } from "../../api/coursesApi";
+import { createCourse, editCourse } from "../../api/coursesApi";
 import {useSelector} from "react-redux";
 import { Redirect } from 'react-router-dom';
 
@@ -11,9 +11,9 @@ export const Request = (props) => {
     const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
     const userLogin = useSelector(state => state.loginReducer.login)
-    console.log("info ", props.courseInfo);
-    // const [courseItem, setCourseItem] = React.useState({});
-    const courseItem = props.courseInfo === null ? {
+    const isCreatePage = props.courseInfo === null;
+
+    const courseItem = isCreatePage ? {
         name: "",
         surname: "",
         course_name: "",
@@ -25,17 +25,28 @@ export const Request = (props) => {
         description: ""
     } : props.courseInfo;
 
+    const buttonText = isCreatePage ? "Отправить" : "Сохранить изменения";
     console.log("item", courseItem);
 
     const sendForm = (data) => {
-        createCourse(data, userLogin)
-          .then(response => {
-              // TODO: redirect to courses page
-              console.log(response)
-              form.resetFields()
-              setRedirect(true);
-          })
-          .catch(err => console.error(err))  
+        if (isCreatePage){
+            createCourse(data, userLogin)
+            .then(response => {
+                // TODO: redirect to courses page
+                // console.log(response)
+                form.resetFields()
+                setRedirect(true);
+            })
+            .catch(err => console.error(err))  
+        }
+        else {
+            editCourse(props.courseInfo.id, data, userLogin)
+            .then(response => {
+                form.resetFields()
+                setRedirect(true)
+            })
+            .catch(err => console.error(err))
+        }
     }
 
     const handleSubmit = (values) => {
@@ -45,33 +56,19 @@ export const Request = (props) => {
               sendForm(values);
           })
     }
-    const data = {
-        id: "1",
-        name: courseItem.name,
-        surname: "f",
-        course_name: "asfd",
-        link: "",
-        price: "",
-        start_date: "",
-        study_quarter: "",
-        status: "",
-        description: ""
-    }
-    console.log('typeof', typeof(courseItem.name));
 
+    React.useEffect(() => {
+        formRef.current.setFieldsValue(courseItem);
+    })
     return (
         <>  
         {console.log("item 2: ",courseItem)}
             <div className="request">
                 <Form
+                    ref={formRef}
                     form={form}
                     layout="vertical"
-                    initialValues={data}
                     onFinish={handleSubmit}
-                    // initialValues={{
-                    //     name: 'fhuf',
-                    //     surname: courseItem.surname 
-                    // }}
                 >
                     <div className="request__form-group">
                         <Form.Item
@@ -81,17 +78,11 @@ export const Request = (props) => {
                             label={<label className="request__form-label">Фамилия</label>}
                             rules={[{ required: true, message: 'Введите фамилию' }]}
                         >
-                        {/* {props.form.getFieldDecorator('name', {
-                            initialValue: courseItem.name
-                            })() }*/}
-                            <Input 
-                                defaultValue={courseItem.name}
-                                className="request__form-input"/>
+                            <Input className="request__form-input"/>
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
                             name="surname"
-                            initialValue={courseItem.surname}
                             label={<label className="request__form-label">Имя</label>}
                             rules={[{ required: true, message: 'Введите имя' }]}
                         >
@@ -101,7 +92,6 @@ export const Request = (props) => {
                     <div className="request__form-group">
                         <Form.Item
                             className="request__form-item"
-                            initialValue={courseItem.course_name}
                             name="course_name"
                             label={<label className="request__form-label">Название курса</label>}
                             rules={[{ required: true, message: 'Введите название курса' }]}
@@ -110,7 +100,6 @@ export const Request = (props) => {
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
-                            initialValue={courseItem.link}
                             name="link"
                             label={<label className="request__form-label">Ссылка на курс</label>}
                             rules={[{ required: true, message: 'Вставьте ссылку на курс' }]}
@@ -121,7 +110,6 @@ export const Request = (props) => {
                     <div className="request__form-group">
                         <Form.Item
                             className="request__form-item"
-                            initialValue={courseItem.price}
                             name="price"
                             label={<label className="request__form-label">Цена курса (в рублях)</label>}
                             rules={[{ required: true, message: 'Укажите цену курса' }]}
@@ -130,7 +118,6 @@ export const Request = (props) => {
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
-                            initialValue={courseItem.start_date}
                             name="start_date"
                             label={<label className="request__form-label">Дата начала курса</label>}>
                             <Input className="request__form-input" type="date" />
@@ -139,14 +126,12 @@ export const Request = (props) => {
                     <div className="request__form-group">
                         <Form.Item
                             className="request__form-item"
-                            initialValue={courseItem.study_quarter}
                             name="study_quarter"
                             label={<label className="request__form-label">Квартал обучения</label>}>
                             <Input className="request__form-input" />
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
-                            initialValue={courseItem.description}
                             name="description"
                             label={<label className="request__form-label">Обоснование</label>}>
                             <Input.TextArea rows={3} />
@@ -156,7 +141,7 @@ export const Request = (props) => {
                         <Button
                             className="request__button"
                             htmlType="submit">
-                            <span className="request__button-text">Отправить</span>
+                            <span className="request__button-text">{buttonText}</span>
                         </Button>
                     </Form.Item>
                 </Form>
