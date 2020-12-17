@@ -8,14 +8,14 @@ import { getCourseById } from '../../api/coursesApi';
 export const RequestPage = (props) => {
 
     const [course, setCourse] = React.useState(null);
-    const login = useSelector((state) => state.loginReducer.login);
+    const login = useSelector((state) => state.login);
     const editPage = props.location.state;
 
     React.useEffect(() => {
         if (editPage) {
         const requestId = props.location.state.requestId;
-        getCourseById(requestId, login).
-            then(response => {
+        getCourseById(requestId, login)
+          .then(response => {
                 setCourse(response.data)
             })
             .catch(err => console.log(err));

@@ -43,7 +43,6 @@ export const Request = (props) => {
         if (isCreatePage){
             createCourse(data, userLogin)
             .then(response => {
-                // console.log(response)
                 form.resetFields()
                 setRedirect(true);
                 setError(false)
