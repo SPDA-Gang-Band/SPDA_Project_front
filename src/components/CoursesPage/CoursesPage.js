@@ -65,7 +65,7 @@ export const CoursesPage = () => {
         }
     ];
 
-    const userLogin = useSelector(state => state.loginReducer.login)
+    const userLogin = useSelector(state => state.login)
     const [courses, setCourses] = useState([])
     const [selectedId, setSelectedId] = useState(null)
 

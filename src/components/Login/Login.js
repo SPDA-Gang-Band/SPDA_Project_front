@@ -8,21 +8,10 @@ import './Login.scss'
 export const Login = () => {
 
   const [form] = Form.useForm();
-  const userLogin = useSelector(state => state.loginReducer.login)
-
-  useEffect(() => {
-    userLogin && redirect()
-  }, [])
-
   const dispatch = useDispatch();
 
   const handleSubmit = values => {
     dispatch({type: loginActions.LOGIN, payload: values.login})
-    redirect()
-  }
-
-  const redirect = () => {
-    console.log("Redirect")
   }
 
   return (

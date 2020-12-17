@@ -1,7 +1,16 @@
 import {applyMiddleware, createStore} from 'redux';
-import rootReducer from './reducers';
+import {loginReducer} from './reducers/loginReducer';
 import thunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
-export default store
+const persistConfig = {
+  key: 'login',
+  storage: storage,
+  whitelist: ['login']
+};
+const pReducer = persistReducer(persistConfig, loginReducer);
+const middleware = applyMiddleware(thunk);
+const store = createStore(pReducer, middleware);
+const persistor = persistStore(store);
+export { persistor, store };
