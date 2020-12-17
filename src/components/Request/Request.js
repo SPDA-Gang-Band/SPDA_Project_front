@@ -10,10 +10,12 @@ export const Request = (props) => {
     const formRef = React.createRef();
     const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
-    const userLogin = useSelector(state => state.loginReducer.login)
-    const isCreatePage = props.courseInfo === null;
+    const userLogin = useSelector(state => state.loginReducer.login);
 
-    const courseItem = isCreatePage ? {
+    const isCreatePage = props.courseInfo === null;
+    const buttonText = isCreatePage ? "Отправить" : "Сохранить изменения";
+
+    const initialValue = {
         name: "",
         surname: "",
         course_name: "",
@@ -23,16 +25,23 @@ export const Request = (props) => {
         study_quarter: "",
         status: "",
         description: ""
-    } : props.courseInfo;
+    }
+    const [courseItem, setCourseItem] = React.useState(initialValue);
 
-    const buttonText = isCreatePage ? "Отправить" : "Сохранить изменения";
-    console.log("item", courseItem);
+    useEffect(() => {
+        console.log(props.courseInfo)
+        setCourseItem(props.courseInfo ? props.courseInfo : initialValue)
+    }, [props.courseInfo])
+
+    useEffect(() => {
+        form.resetFields()
+    }, [courseItem])
+
 
     const sendForm = (data) => {
         if (isCreatePage){
             createCourse(data, userLogin)
             .then(response => {
-                // TODO: redirect to courses page
                 // console.log(response)
                 form.resetFields()
                 setRedirect(true);
@@ -48,9 +57,9 @@ export const Request = (props) => {
             .catch(err => console.error(err))
         }
     }
+    
 
     const handleSubmit = (values) => {
-        console.log(values);
         form.validateFields()
           .then(() => {
               sendForm(values);
@@ -62,27 +71,28 @@ export const Request = (props) => {
     })
     return (
         <>  
-        {console.log("item 2: ",courseItem)}
             <div className="request">
                 <Form
                     ref={formRef}
                     form={form}
                     layout="vertical"
+                    initialValues={courseItem}
                     onFinish={handleSubmit}
                 >
                     <div className="request__form-group">
                         <Form.Item
                             ref={formRef}
                             className="request__form-item"
-                            name="name"
+                            name="surname"
                             label={<label className="request__form-label">Фамилия</label>}
                             rules={[{ required: true, message: 'Введите фамилию' }]}
                         >
-                            <Input className="request__form-input"/>
+                            <Input
+                                className="request__form-input"/>
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"
-                            name="surname"
+                            name="name"
                             label={<label className="request__form-label">Имя</label>}
                             rules={[{ required: true, message: 'Введите имя' }]}
                         >
@@ -152,5 +162,3 @@ export const Request = (props) => {
         </>
     )
 }
-
-// export default Form.create()(Request);
