@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { Space, Select } from 'antd';
 import Table from "./Table";
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector } from "react-redux";
-import {editStatus, editCourse, getCourses} from "../../api/coursesApi";
+import {editStatus, editCourse, getCourses, deleteCourse} from "../../api/coursesApi";
 import { Redirect } from 'react-router-dom';
 
 import './CoursesPage.scss';
@@ -66,14 +66,6 @@ export const CoursesPage = () => {
             },
             key: 'study_quarter'
         },
-        {
-            title: '',
-            dataIndex: 'action',
-            key: 'action',
-            render: (_, record) => (
-              <EditOutlined onClick={() => edit(record)} />
-            )
-        },
     ];
 
     const userLogin = useSelector(state => state.login)
@@ -81,6 +73,7 @@ export const CoursesPage = () => {
     const [redirect, setRedirect] = useState(false);
     const [requestId, setRequestId] = useState(null);
     const [selectedId, setSelectedId] = useState(null)
+    const [reload, setReload] = useState(false)
 
     if (userLogin === 'admin'){
         columns.push(
@@ -115,14 +108,34 @@ export const CoursesPage = () => {
             key: 'status',
         })
     }
+    columns.push(
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => (
+                <EditOutlined onClick={() => edit(record)} />
+            )
+        },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_, record) => (
+                <DeleteOutlined onClick={() => deleteRecord (record)} />
+            )
+        },
+    )
     function handleChange(value) {
         editStatus(selectedId, {status: value},userLogin)
+            .catch(err => console.log(err))
     }
 
     useEffect(() => {
         getCourses(userLogin)
           .then(response => {
               setCourses(response.data)
+              setReload(false)
           })
           .catch(err => console.error(err))
     }, [])
@@ -130,6 +143,14 @@ export const CoursesPage = () => {
     const edit = (record) => {
         setRedirect(true);
         setRequestId(record.id);
+    }
+
+    function deleteRecord(record){
+        deleteCourse(record.id, userLogin)
+            .then(
+                response => setReload(true)
+            )
+            .catch(err => console.log(err))
     }
 
     return (
