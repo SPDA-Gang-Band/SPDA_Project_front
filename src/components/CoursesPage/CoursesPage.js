@@ -73,6 +73,7 @@ export const CoursesPage = () => {
     const [redirect, setRedirect] = useState(false);
     const [requestId, setRequestId] = useState(null);
     const [selectedId, setSelectedId] = useState(null)
+    const [reload, setReload] = useState(false)
 
     if (userLogin === 'admin'){
         columns.push(
@@ -134,6 +135,7 @@ export const CoursesPage = () => {
         getCourses(userLogin)
           .then(response => {
               setCourses(response.data)
+              setReload(false)
           })
           .catch(err => console.error(err))
     }, [])
@@ -143,8 +145,11 @@ export const CoursesPage = () => {
         setRequestId(record.id);
     }
 
-    function deleteRecord(){
-        deleteCourse(selectedId, userLogin)
+    function deleteRecord(record){
+        deleteCourse(record.id, userLogin)
+            .then(
+                response => setReload(true)
+            )
             .catch(err => console.log(err))
     }
 
