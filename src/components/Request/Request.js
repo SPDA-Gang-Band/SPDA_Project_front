@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { Form, Input, Button } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Alert, Form, Input, Button } from 'antd';
 import { createCourse, editCourse } from "../../api/coursesApi";
 import {useSelector} from "react-redux";
 import { Redirect } from 'react-router-dom';
@@ -10,7 +10,8 @@ export const Request = (props) => {
     const formRef = React.createRef();
     const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
-    const userLogin = useSelector(state => state.loginReducer.login);
+    const [error, setError] = useState(false);
+    const userLogin = useSelector(state => state.login)
 
     const isCreatePage = props.courseInfo === null;
     const buttonText = isCreatePage ? "Отправить" : "Сохранить изменения";
@@ -45,8 +46,12 @@ export const Request = (props) => {
                 // console.log(response)
                 form.resetFields()
                 setRedirect(true);
+                setError(false)
             })
-            .catch(err => console.error(err))  
+            .catch(err => {
+                console.error(err)
+                setError(true)
+            })
         }
         else {
             editCourse(props.courseInfo.id, data, userLogin)
@@ -57,7 +62,6 @@ export const Request = (props) => {
             .catch(err => console.error(err))
         }
     }
-    
 
     const handleSubmit = (values) => {
         form.validateFields()
@@ -73,7 +77,6 @@ export const Request = (props) => {
         <>  
             <div className="request">
                 <Form
-                    ref={formRef}
                     form={form}
                     layout="vertical"
                     initialValues={courseItem}
@@ -81,7 +84,6 @@ export const Request = (props) => {
                 >
                     <div className="request__form-group">
                         <Form.Item
-                            ref={formRef}
                             className="request__form-item"
                             name="surname"
                             label={<label className="request__form-label">Фамилия</label>}
@@ -158,6 +160,7 @@ export const Request = (props) => {
                 {redirect && (
                     <Redirect to="/course-requests" />
                 )}
+                { error && <Alert message="Error" type="error" showIcon /> }
             </div>
         </>
     )
