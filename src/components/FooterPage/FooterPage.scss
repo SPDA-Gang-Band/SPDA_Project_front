@@ -1,0 +1,22 @@
+.footer-bg{
+    background-color: #F2F3F7;
+
+    //remove fixed positioning later
+    // position: fixed;
+    // bottom: 0;
+    // right: 0;
+    // left: 0;
+}   
+
+.page-footer{
+    
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    
+    &__text{
+        font-size: 16px;
+        line-height: 24px;
+        color: #A9B4C4;
+    }
+}
