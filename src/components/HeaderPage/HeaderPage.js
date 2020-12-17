@@ -13,8 +13,8 @@ export const HeaderPage = (props) => {
 
     const dispatch = useDispatch();
 
-    const handleAuth = () => {
-      props.loggedIn && dispatch({type: loginActions.LOGOUT})
+    const handleLogout = () => {
+      dispatch({type: loginActions.LOGOUT})
     }
 
     const extraMenu = () => (
@@ -30,12 +30,12 @@ export const HeaderPage = (props) => {
                 Курсы
             </Link>
             <Button
-                onClick={handleAuth}
+                onClick={handleLogout}
                 className="page-header__button"
                 type="primary"
             >
                 <span className="page-header__button-text">
-                    {props.loggedIn ? 'Выйти' : 'Войти'}
+                    Выйти
                 </span>
             </Button>
         </>
@@ -48,7 +48,7 @@ export const HeaderPage = (props) => {
                     <a href="/">
                         <img src={logo} alt="logo" />
                     </a>
-                    <div>{extraMenu()}</div>
+                    <div>{props.loggedIn && extraMenu()}</div>
                 </div>
             </Header>
         </>

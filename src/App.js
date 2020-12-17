@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 
 function App() {
 
-  const userLogin = useSelector(state => state.loginReducer.login)
+  const userLogin = useSelector(state => state.login)
   const loggedIn = userLogin !== null
 
   return (

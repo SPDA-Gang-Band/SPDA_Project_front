@@ -10,13 +10,11 @@ export const Request = () => {
 
     const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
-    const userLogin = useSelector(state => state.loginReducer.login)
+    const userLogin = useSelector(state => state.login)
 
     const sendForm = (data) => {
         createCourse(data, userLogin)
           .then(response => {
-              // TODO: redirect to courses page
-              console.log(response)
               form.resetFields()
               setRedirect(true);
           })
@@ -24,7 +22,6 @@ export const Request = () => {
     }
 
     const handleSubmit = (values) => {
-        console.log(values);
         form.validateFields()
           .then(() => {
               sendForm(values);
