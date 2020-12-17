@@ -69,9 +69,6 @@ export const Request = (props) => {
           })
     }
 
-    React.useEffect(() => {
-        formRef.current.setFieldsValue(courseItem);
-    })
     return (
         <>  
             <div className="request">
