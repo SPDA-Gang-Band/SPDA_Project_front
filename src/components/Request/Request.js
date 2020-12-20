@@ -22,7 +22,7 @@ export const Request = (props) => {
         link: "",
         price: "",
         start_date: "",
-        study_quarter: "1",
+        study_quarter: 1,
         status: "",
         description: ""
     }
@@ -30,6 +30,7 @@ export const Request = (props) => {
 
     useEffect(() => {
         setCourseItem(props.courseInfo ? props.courseInfo : initialValue)
+        console.log(props.courseInfo)
     }, [props.courseInfo])
 
     useEffect(() => {
@@ -39,8 +40,9 @@ export const Request = (props) => {
 
     const sendForm = (data) => {
         if (isCreatePage){
+            console.log(data)
             createCourse(data, userLogin)
-            .then(response => {
+            .then(() => {
                 form.resetFields()
                 setRedirect(true);
                 setError(null)
@@ -140,10 +142,10 @@ export const Request = (props) => {
                             rules={[{ required: true, message: 'Укажите квартал обучения' }]}
                         >
                             <Radio.Group buttonStyle="solid" size="large">
-                                <Radio.Button value="1">1-й квартал</Radio.Button>
-                                <Radio.Button value="2">2-й квартал</Radio.Button>
-                                <Radio.Button value="3">3-й квартал</Radio.Button>
-                                <Radio.Button value="4">4-й квартал</Radio.Button>
+                                <Radio.Button value={1}>1-й квартал</Radio.Button>
+                                <Radio.Button value={2}>2-й квартал</Radio.Button>
+                                <Radio.Button value={3}>3-й квартал</Radio.Button>
+                                <Radio.Button value={4}>4-й квартал</Radio.Button>
                             </Radio.Group>
                         </Form.Item>
                         <Form.Item
