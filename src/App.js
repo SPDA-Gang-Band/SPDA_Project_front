@@ -6,7 +6,7 @@ import { FooterPage } from './components/FooterPage/FooterPage';
 import { CoursesPage } from './components/CoursesPage/CoursesPage';
 import { MainPage } from './components/MainPage/MainPage';
 import { RequestPage } from './components/RequestPage/RequestPage';
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 function App() {
 

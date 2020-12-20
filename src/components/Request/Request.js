@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Form, Input, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Alert, Form, Input, Button, Radio } from 'antd';
 import { createCourse, editCourse } from "../../api/coursesApi";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 
 import './Request.scss';
@@ -9,7 +9,7 @@ import './Request.scss';
 export const Request = (props) => {
     const [redirect, setRedirect] = React.useState(false);
     const [form] = Form.useForm();
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const userLogin = useSelector(state => state.login)
 
     const isCreatePage = props.courseInfo === null;
@@ -22,15 +22,15 @@ export const Request = (props) => {
         link: "",
         price: "",
         start_date: "",
-        study_quarter: "",
+        study_quarter: 1,
         status: "",
         description: ""
     }
     const [courseItem, setCourseItem] = React.useState(initialValue);
 
     useEffect(() => {
-        console.log(props.courseInfo)
         setCourseItem(props.courseInfo ? props.courseInfo : initialValue)
+        console.log(props.courseInfo)
     }, [props.courseInfo])
 
     useEffect(() => {
@@ -40,24 +40,28 @@ export const Request = (props) => {
 
     const sendForm = (data) => {
         if (isCreatePage){
+            console.log(data)
             createCourse(data, userLogin)
-            .then(response => {
+            .then(() => {
                 form.resetFields()
                 setRedirect(true);
-                setError(false)
+                setError(null)
             })
             .catch(err => {
                 console.error(err)
-                setError(true)
+                setError(err)
             })
         }
         else {
             editCourse(props.courseInfo.id, data, userLogin)
-            .then(response => {
+            .then(() => {
                 form.resetFields()
                 setRedirect(true)
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                console.error(err)
+                setError(err)
+            })
         }
     }
 
@@ -137,7 +141,12 @@ export const Request = (props) => {
                             label={<label className="request__form-label">Квартал обучения</label>}
                             rules={[{ required: true, message: 'Укажите квартал обучения' }]}
                         >
-                            <Input className="request__form-input" />
+                            <Radio.Group buttonStyle="solid" size="large">
+                                <Radio.Button value={1}>1-й квартал</Radio.Button>
+                                <Radio.Button value={2}>2-й квартал</Radio.Button>
+                                <Radio.Button value={3}>3-й квартал</Radio.Button>
+                                <Radio.Button value={4}>4-й квартал</Radio.Button>
+                            </Radio.Group>
                         </Form.Item>
                         <Form.Item
                             className="request__form-item"

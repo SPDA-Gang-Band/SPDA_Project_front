@@ -3,7 +3,7 @@ import { baseUrl, courseRequestUrl } from "./constants";
 
 const createHeader = login => {
   return {
-    'Authorization': login,
+    'Authorization': `fullname ${login}`,
   }
 }
 
