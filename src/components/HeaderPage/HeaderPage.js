@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Layout, Button, Menu } from 'antd';
+import { Layout, Button } from 'antd';
 
 import './HeaderPage.scss';
 import logo from '../../images/logo.svg';
-import {useDispatch} from "react-redux";
-import {loginActions} from "../../store/constants";
+import { useDispatch } from "react-redux";
+import { loginActions } from "../../store/constants";
 
 const { Header } = Layout;
 

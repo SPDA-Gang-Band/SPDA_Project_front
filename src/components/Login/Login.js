@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
-import {Button, Form, Input} from "antd";
-import {useDispatch, useSelector} from "react-redux";
-import {loginActions} from "../../store/constants";
+import React from 'react';
+import { Button, Form, Input } from "antd";
+import { useDispatch } from "react-redux";
+import { loginActions } from "../../store/constants";
 
 import './Login.scss'
 
@@ -11,7 +11,7 @@ export const Login = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = values => {
-    dispatch({type: loginActions.LOGIN, payload: values.login})
+    dispatch({type: loginActions.LOGIN, payload: `${values.name} ${values.surname}`})
   }
 
   return (
@@ -26,9 +26,17 @@ export const Login = () => {
           <div className="login__form-group">
             <Form.Item
               className="login__form-item"
-              name="login"
-              label={<label className="login__form-label">Логин</label>}
-              rules={[{ required: true, message: 'Введите логин' }]}
+              name="surname"
+              label={<label className="login__form-label">Фамилия</label>}
+              rules={[{ required: true, message: 'Введите фамилию' }]}
+            >
+              <Input className="login__form-input"/>
+            </Form.Item>
+            <Form.Item
+              className="login__form-item"
+              name="name"
+              label={<label className="login__form-label">Имя</label>}
+              rules={[{ required: true, message: 'Введите имя' }]}
             >
               <Input className="login__form-input"/>
             </Form.Item>

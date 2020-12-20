@@ -149,7 +149,7 @@ export const CoursesPage = () => {
     function deleteRecord(record){
         deleteCourse(record.id, userLogin)
             .then(
-                response => setReload(true)
+                () => setReload(true)
             )
             .catch(err => console.log(err))
     }
